@@ -16,11 +16,13 @@
       crossorigin="anonymous"
     />
 
-    <title>Início</title>
+    <title>Techs</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="index.html">Startkit Vuejs & Bootstrap</a>
+      <a class="navbar-brand" href="../index.html"
+        >Startkit Vuejs & Bootstrap</a
+      >
       <button
         class="navbar-toggler"
         type="button"
@@ -34,23 +36,38 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="index.html">Início</a>
-          </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/techs.html">Techs</a>
+            <a class="nav-link" href="../index.html">Início</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="techs.html">Techs</a>
           </li>
         </ul>
       </div>
     </nav>
 
-    <div class="container mt-4">
-      <div class="card">
-        <div class="card-body">
-          Seja bem vindo(a) à esse startkit. Com ele você pode visualizar um
-          pouco do poder do VueJS
+    <div id="app" class="container mt-4">
+      <h2 class="mb-3">Listagem de techs</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="tech in techs">
+            <td>{{ tech }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <form @submit="addTech">
+        <div class="d-flex">
+          <input class="form form-control" v-model="tech" />
+          <button type="submit" class="btn btn-success ml-2">
+            Adicionar
+          </button>
         </div>
-      </div>
+      </form>
     </div>
 
     <!-- Optional JavaScript -->
@@ -70,5 +87,29 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"
     ></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          tech: "",
+          techs: [],
+        },
+        methods: {
+          addTech: function (e) {
+            e.preventDefault();
+            this.techs.push(this.tech);
+            localStorage.setItem("@svb/techs", JSON.stringify(this.techs));
+            this.tech = "";
+          },
+        },
+        mounted: function (e) {
+          const techs = JSON.parse(localStorage.getItem("@svb/techs"));
+          this.techs = techs;
+        },
+      });
+    </script>
   </body>
 </html>
